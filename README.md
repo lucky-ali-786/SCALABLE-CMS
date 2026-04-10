@@ -38,57 +38,54 @@ An enterprise-grade, asynchronous Content Management System (CMS) engineered to 
 * **Queue Monitoring:** Bull Board
 
 
-# 🚀 Backend API Service
+# 🚀 Backend API Service (Docker Hub Edition)
 
-![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Image-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
-This repository contains the containerized backend service for the application. The project is fully configured with Docker, ensuring a consistent and isolated environment for development, testing, and production.
-
----
-
-## 📋 Prerequisites
-
-Before you begin, ensure you have the following installed on your machine:
-- [Docker Engine](https://docs.docker.com/engine/install/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-- *Node.js is **not** required locally, as the application runs entirely inside the container.*
+This backend service is available as a pre-built Docker image. You can pull and run it directly without setting up a local development environment.
 
 ---
 
-## ⚙️ Environment Configuration
+## ⚙️ 1. Setup Environment Variables
 
-This project relies on several environment variables to connect to external services (like MongoDB Atlas, Redis, Cloudinary, and Google OAuth). 
-
-1. Create a `.env` file in the **root directory** of this project.
-2. Copy the exact template below and fill in your secure credentials.
-
-> **⚠️ Security Warning:** The `.env` file contains highly sensitive secrets. It is intentionally excluded from version control via `.gitignore` and from the container build context via `.dockerignore`. **Never commit your `.env` file.**
+The container requires specific environment variables to connect to external services. Create a `.env` file on your machine with the following keys:
 
 ```env
-# Server Configuration
 PORT=8000
+MONGO_URL=your_mongodb_atlas_url
 CORS_ORIGIN=http://localhost:5173
-
-# Database Connections
-MONGO_URL=your_mongodb_atlas_connection_string
-
-# JWT Authentication
-ACCESS_TOKEN_SECRET=your_secure_access_token_secret
+ACCESS_TOKEN_SECRET=your_secret
 ACCESS_TOKEN_EXPIRY=1d
-REFRESH_TOKEN_SECRET=your_secure_refresh_token_secret
+REFRESH_TOKEN_SECRET=your_secret
 REFRESH_TOKEN_EXPIRY=10d
+CLOUDINARY_CLOUD_NAME=your_name
+CLOUDINARY_API_KEY=your_key
+CLOUDINARY_API_SECRET=your_secret
+GOOGLE_CLIENT_ID=your_id
+GOOGLE_CLIENT_SECRET=your_secret
+ADMIN_EMAIL=admin@example.com
+PASSWORD=your_password
+// Run this command in the same folder where your .env file is located:
+docker run -d \
+  --name my-backend-api \
+  -p 8000:8000 \
+  --env-file .env \
+  your_username/backend-service:latest
+// or
+// Create a docker-compose.yml file and paste the following:
+version: '3.8'
+services:
+  api:
+    image: your_username/backend-service:latest
+    container_name: backend_app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: always
 
-# Cloudinary (File Uploads)
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
 
-# Google OAuth (SSO)
-GOOGLE_CLIENT_ID=your_google_oauth_client_id
-GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+Then run:
+docker-compose up -d
 
-# Admin / System Credentials
-ADMIN_EMAIL=your_admin_email@domain.com
-PASSWORD=your_system_password
----
