@@ -37,4 +37,58 @@ An enterprise-grade, asynchronous Content Management System (CMS) engineered to 
 * **API Documentation:** Swagger UI
 * **Queue Monitoring:** Bull Board
 
+
+# 🚀 Backend API Service
+
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+
+This repository contains the containerized backend service for the application. The project is fully configured with Docker, ensuring a consistent and isolated environment for development, testing, and production.
+
+---
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed on your machine:
+- [Docker Engine](https://docs.docker.com/engine/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- *Node.js is **not** required locally, as the application runs entirely inside the container.*
+
+---
+
+## ⚙️ Environment Configuration
+
+This project relies on several environment variables to connect to external services (like MongoDB Atlas, Redis, Cloudinary, and Google OAuth). 
+
+1. Create a `.env` file in the **root directory** of this project.
+2. Copy the exact template below and fill in your secure credentials.
+
+> **⚠️ Security Warning:** The `.env` file contains highly sensitive secrets. It is intentionally excluded from version control via `.gitignore` and from the container build context via `.dockerignore`. **Never commit your `.env` file.**
+
+```env
+# Server Configuration
+PORT=8000
+CORS_ORIGIN=http://localhost:5173
+
+# Database Connections
+MONGO_URL=your_mongodb_atlas_connection_string
+
+# JWT Authentication
+ACCESS_TOKEN_SECRET=your_secure_access_token_secret
+ACCESS_TOKEN_EXPIRY=1d
+REFRESH_TOKEN_SECRET=your_secure_refresh_token_secret
+REFRESH_TOKEN_EXPIRY=10d
+
+# Cloudinary (File Uploads)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+# Google OAuth (SSO)
+GOOGLE_CLIENT_ID=your_google_oauth_client_id
+GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+
+# Admin / System Credentials
+ADMIN_EMAIL=your_admin_email@domain.com
+PASSWORD=your_system_password
 ---
