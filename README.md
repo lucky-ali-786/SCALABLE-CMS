@@ -71,13 +71,13 @@ docker run -d \
   --name my-backend-api \
   -p 8000:8000 \
   --env-file .env \
-  your_username/backend-service:latest
+  lucky894/backend-service-cms:v1
 // or
 // Create a docker-compose.yml file and paste the following:
 version: '3.8'
 services:
   api:
-    image: your_username/backend-service:latest
+    image: lucky894/backend-service-cms:v1
     container_name: backend_app
     ports:
       - "8000:8000"
