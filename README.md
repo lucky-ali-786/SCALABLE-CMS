@@ -38,18 +38,13 @@ An enterprise-grade, asynchronous Content Management System (CMS) engineered to 
 * **Queue Monitoring:** Bull Board
 
 
-# 🚀 Backend API Service (Docker Hub Edition)
+# 🚀 Full-Stack CMS Application (Docker Hub Edition)
 
-![Docker](https://img.shields.io/badge/Docker-Image-2496ED?style=flat-square&logo=docker&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
-
-This backend service is available as a pre-built Docker image. You can pull and run it directly without setting up a local development environment.
-
----
+This application is fully containerized. Both the backend API and the Vite + React frontend are available as pre-built Docker images. You can pull and run the entire stack locally with a single command, without needing a local Node.js environment.
 
 ## ⚙️ 1. Setup Environment Variables
 
-The container requires specific environment variables to connect to external services. Create a `.env` file on your machine with the following keys:
+The backend container requires specific environment variables to connect to your database and external services. Create a `.env` file in your root folder with the following keys:
 
 ```env
 PORT=8000
@@ -66,26 +61,43 @@ GOOGLE_CLIENT_ID=your_id
 GOOGLE_CLIENT_SECRET=your_secret
 ADMIN_EMAIL=admin@example.com
 PASSWORD=your_password
-// Run this command in the same folder where your .env file is located:
-docker run -d \
-  --name my-backend-api \
-  -p 8000:8000 \
-  --env-file .env \
-  lucky894/backend-service-cms:v1
-// or
-// Create a docker-compose.yml file and paste the following:
+```
+🐳 2. Run the Full Stack with Docker Compose
+The easiest way to run both the frontend and backend simultaneously is using Docker Compose. It ensures both containers start together and share the required configurations.
+
+Create a docker-compose.yml file in the same folder as your .env file and paste the following:
 version: '3.8'
+```
 services:
-  api:
+  backend:
     image: lucky894/backend-service-cms:v1
-    container_name: backend_app
+    container_name: cms_backend
     ports:
       - "8000:8000"
     env_file:
       - .env
     restart: always
 
+  frontend:
+    image: lucky894/frontend-service-cms:v1 
+    container_name: cms_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always
+```
+▶️ 3. Start the Application
+Once your .env and docker-compose.yml files are ready, open your terminal in that folder and run:
+```docker-compose up -d```
+Docker will automatically pull the latest images from Docker Hub and start both services in the background.
 
-Then run:
-docker-compose up -d
+Access the Application:
+
+Frontend: Open http://localhost:5173 in your browser.
+
+Backend API: Running locally on http://localhost:8000.
+
+To stop the application, run docker-compose down.
+
 
